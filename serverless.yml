@@ -1,0 +1,104 @@
+org: andylilfs
+app: andylilfs-blog
+service: andylilfs-blog
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  deploymentMethod: direct
+  runtime: nodejs20.x
+  environment:
+    DYNAMODB_BLOG_POST_TABLE: ${self:service}-blogPostTable-${sls:stage}
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 'dynamodb:PutItem'
+            - 'dynamodb:Get*'
+            - 'dynamodb:Scan*'
+            - 'dynamodb:UpdateItem'
+            - 'dynamodb:DeleteItem'
+          Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-blogPostTable-${sls:stage}
+
+functions:
+  # httpApi:
+  #   authorizers:
+  #     AdminAuthorizer:
+  #       type: jwt
+  #       identitySource: $request.header.Authorization
+  #       issuerUrl: https://cognito-idp.${aws:region}.amazonaws.com/us-east-1_866I04ibg
+  #       audience:
+  #         - 3qc7ktrqj81loijlireheh2p75
+  health:
+    handler: index.handler
+    events:
+      - httpApi:
+          path: /
+          method: get
+  createBlogPost:
+    handler: blogPost/create.handler
+    events:
+      - httpApi:
+          path: /blogs
+          method: post
+          # authorizer:
+          #   name: AdminAuthorizer
+  listBlogPost:
+    handler: blogPost/list.handler
+    events:
+      - httpApi:
+          path: /blogs
+          method: get
+  getBlogPost:
+    handler: blogPost/get.handler
+    events:
+      - httpApi:
+          path: /blogs/{id}
+          method: get
+  updateBlogPost:
+    handler: blogPost/update.handler
+    events:
+      - httpApi:
+          path: /blogs/{id}
+          method: put
+          # authorizer:
+          #   name: AdminAuthorizer
+  deleteBlogPost:
+    handler: blogPost/delete.handler
+    events:
+      - httpApi:
+          path: /blogs/{id}
+          method: delete
+          # authorizer:
+          #   name: AdminAuthorizer
+
+resources:
+  Resources:
+    BlogPostTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        TableName: ${self:service}-blogPostTable-${sls:stage}
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-dynamodb
+  - serverless-offline  
+
+custom:
+  serverless-dynamodb:
+    stages:
+      - dev
+    start:
+      docker: true
+      port: 8000
+      migrate: true
+      convertEmptyValues: true
+      noStart: true
