@@ -2,6 +2,7 @@ import { PutCommand } from "@aws-sdk/lib-dynamodb";
 import { docClient } from "../dynamodbClient";
 import { BlogPost } from "../models/blogPost";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { jsonResponse } from "../utils/jsonResponse";
 
 export const handler = async (
   event: APIGatewayProxyEvent
@@ -14,8 +15,5 @@ export const handler = async (
     Item: blogPost,
   });
   const res = await docClient.send(command);
-  return {
-    statusCode: 201,
-    body: JSON.stringify(blogPost),
-  };
+  return jsonResponse(201, JSON.stringify(res.Attributes));
 };

@@ -1,6 +1,7 @@
 import { DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { docClient } from "../dynamodbClient";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { jsonResponse } from "../utils/jsonResponse";
 
 export const handler = async (
   event: APIGatewayProxyEvent
@@ -8,10 +9,7 @@ export const handler = async (
   try {
     const id = event.pathParameters?.id; // Assuming the ID is passed as a path parameter
     if (!id) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: "ID is missing" }),
-      };
+      return jsonResponse(400, JSON.stringify({ error: "ID is missing" }));
     }
 
     const command = new DeleteCommand({
@@ -22,14 +20,11 @@ export const handler = async (
     });
     await docClient.send(command);
 
-    return {
-      statusCode: 204, // No content
-      body: "",
-    };
+    return jsonResponse(204, "");
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "Internal Server Error" }),
-    };
+    return jsonResponse(
+      500,
+      JSON.stringify({ error: "Internal Server Error" })
+    );
   }
 };
