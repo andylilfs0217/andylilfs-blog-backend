@@ -1,6 +1,7 @@
 import { GetCommand } from "@aws-sdk/lib-dynamodb";
 import { docClient } from "../dynamodbClient";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { jsonResponse } from "../utils/jsonResponse";
 
 export const handler = async (
   event: APIGatewayProxyEvent
@@ -8,10 +9,7 @@ export const handler = async (
   try {
     const id = event.pathParameters?.id; // Assuming the ID is passed as a path parameter
     if (!id) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: "ID is missing" }),
-      };
+      return jsonResponse(400, JSON.stringify({ error: "ID is missing" }));
     }
 
     const command = new GetCommand({
@@ -23,20 +21,14 @@ export const handler = async (
     const res = await docClient.send(command);
 
     if (!res.Item) {
-      return {
-        statusCode: 404,
-        body: JSON.stringify({ error: "Item not found" }),
-      };
+      return jsonResponse(404, JSON.stringify({ error: "Item not found" }));
     }
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(res.Item),
-    };
+    return jsonResponse(200, JSON.stringify(res.Item));
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "Internal Server Error" }),
-    };
+    return jsonResponse(
+      500,
+      JSON.stringify({ error: "Internal Server Error" })
+    );
   }
 };

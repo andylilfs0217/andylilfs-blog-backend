@@ -4,23 +4,42 @@ class BlogPost {
   id: string;
   title: string;
   content: string;
-  author: string;
+  author: Author;
   createdAt: string;
   updatedAt: string;
+  coverImage: string;
+  subtitle: string;
 
-  constructor(title: string, content: string, author: string);
-  constructor(title: string, content: string, author: string, id?: string);
   constructor(
     title: string,
     content: string,
-    author: string,
+    author: Author,
+    coverImage: string,
+    subtitle: string
+  );
+  constructor(
+    title: string,
+    content: string,
+    author: Author,
+    coverImage: string,
+    subtitle: string,
+    id?: string
+  );
+  constructor(
+    title: string,
+    content: string,
+    author: Author,
+    coverImage: string,
+    subtitle: string,
     id?: string,
     updatedAt?: string
   );
   constructor(
     title: string,
     content: string,
-    author: string,
+    author: Author,
+    coverImage: string,
+    subtitle: string,
     id?: string,
     updatedAt?: string,
     createdAt?: string
@@ -29,13 +48,10 @@ class BlogPost {
     this.title = title;
     this.content = content;
     this.author = author;
+    this.coverImage = coverImage;
+    this.subtitle = subtitle;
     this.createdAt = createdAt || new Date().toISOString();
     this.updatedAt = updatedAt || new Date().toISOString();
-  }
-
-  publish(): void {
-    // Logic to publish the blog post
-    console.log(`"${this.title}" by ${this.author} has been published.`);
   }
 }
 

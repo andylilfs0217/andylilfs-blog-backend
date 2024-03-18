@@ -22,14 +22,6 @@ provider:
           Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-blogPostTable-${sls:stage}
 
 functions:
-  # httpApi:
-  #   authorizers:
-  #     AdminAuthorizer:
-  #       type: jwt
-  #       identitySource: $request.header.Authorization
-  #       issuerUrl: https://cognito-idp.${aws:region}.amazonaws.com/us-east-1_866I04ibg
-  #       audience:
-  #         - 3qc7ktrqj81loijlireheh2p75
   health:
     handler: index.handler
     events:
@@ -42,8 +34,6 @@ functions:
       - httpApi:
           path: /blogs
           method: post
-          # authorizer:
-          #   name: AdminAuthorizer
   listBlogPost:
     handler: blogPost/list.handler
     events:
@@ -62,16 +52,12 @@ functions:
       - httpApi:
           path: /blogs/{id}
           method: put
-          # authorizer:
-          #   name: AdminAuthorizer
   deleteBlogPost:
     handler: blogPost/delete.handler
     events:
       - httpApi:
           path: /blogs/{id}
           method: delete
-          # authorizer:
-          #   name: AdminAuthorizer
 
 resources:
   Resources:
@@ -93,6 +79,8 @@ plugins:
   - serverless-offline  
 
 custom:
+  serverless-offline:
+    httpPort: 3001
   serverless-dynamodb:
     stages:
       - dev

@@ -1,6 +1,7 @@
 import { GetCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { docClient } from "../dynamodbClient";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { jsonResponse } from "../utils/jsonResponse";
 
 export const handler = async (
   event: APIGatewayProxyEvent
@@ -13,7 +14,7 @@ export const handler = async (
       body: JSON.stringify({ error: "ID is missing" }),
     };
   }
-  const { title, content, author } = body;
+  const { title, content, author, coverImage, subtitle } = body;
   const updatedAt = new Date().toISOString();
 
   // Retrieve the existing blog post from the database
@@ -29,6 +30,8 @@ export const handler = async (
     title,
     content,
     author,
+    coverImage,
+    subtitle,
     updatedAt,
   };
 
@@ -37,19 +40,18 @@ export const handler = async (
     TableName: process.env.DYNAMODB_BLOG_POST_TABLE!,
     Key: { id },
     UpdateExpression:
-      "SET title = :title, content = :content, author = :author, updatedAt = :updatedAt",
+      "SET title = :title, content = :content, author = :author, coverImage = :coverImage, subtitle = :subtitle, updatedAt = :updatedAt",
     ExpressionAttributeValues: {
       ":title": updatedPost.title,
       ":content": updatedPost.content,
       ":author": updatedPost.author,
       ":updatedAt": updatedPost.updatedAt,
+      ":coverImage": updatedPost.coverImage,
+      ":subtitle": updatedPost.subtitle,
     },
     ReturnValues: "ALL_NEW",
   });
   const res = await docClient.send(updateCommand);
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify(res.Attributes),
-  };
+  return jsonResponse(200, JSON.stringify(res.Attributes));
 };
