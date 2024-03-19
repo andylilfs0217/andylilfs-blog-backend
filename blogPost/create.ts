@@ -1,5 +1,5 @@
 import { PutCommand } from "@aws-sdk/lib-dynamodb";
-import { docClient } from "../dynamodbClient";
+import { docClient } from "../utils/dynamodbClient";
 import { BlogPost } from "../models/blogPost";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { jsonResponse } from "../utils/jsonResponse";

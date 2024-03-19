@@ -10,8 +10,6 @@ export function jsonResponse(
   headers = {
     ...headers,
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*", // This allows any origin
-    "Access-Control-Allow-Credentials": true, // This allows cookies
   };
 
   return {
