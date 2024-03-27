@@ -34,6 +34,12 @@ functions:
       - httpApi:
           path: /blogs
           method: post
+  upsertBlogPostFromNotion:
+    handler: blogPost/upsertBlogPostFromNotion.handler
+    events:
+      - httpApi:
+          path: /blogs/notion/{id}
+          method: post
   listBlogPost:
     handler: blogPost/list.handler
     events:
