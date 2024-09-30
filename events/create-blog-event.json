@@ -1,0 +1,115 @@
+{
+  "body": "{\n  \"id\": \"how-not-to-lay-flat\",\n  \"title\": \"How NOT to \\\"lay flat\\\"\",\n  \"date\": \"2024-03-24T00:00:00.000Z\",\n  \"tags\": [\"society\", \"opinion\"],\n  \"lastmod\": \"2024-03-24T00:00:00.000Z\",\n  \"draft\": false,\n  \"summary\": \"The concept of \\\"lying flat\\\" reflects young people's rejection of overwork and societal pressures. While some choose this path due to disillusionment, others, like the author, remain motivated by curiosity, small goals, and positive friendships, believing in eventual growth and fulfillment.\",\n  \"image\": [],\n  \"authors\": [\"default\"],\n  \"layout\": null,\n  \"bibliography\": null,\n  \"canonicalUrl\": null,\n  \"content\": \"# What a joke!\\n\\nRecently, I listened to a podcast by Brian Tsang, a stand-up comedian from Taiwan. In the Q&A section, he mentioned that he had asked his father what kind of jokes he wanted to hear. His father replied that he wanted to hear some jokes about the thoughts of young people, because he couldn't understand what they were thinking and why. For example, he couldn't understand the concept of \\\"lying flat\\\". He found it hard to put himself in their shoes and understand why youngsters would prefer to \\\"lie flat\\\" rather than fighting for a better life. Brian's response really interested me and I want to extend his opinions with my youthful identity here.\\n\\n# What is \\\"Lying Flat\\\"?\\n\\nBefore I delve into my thoughts on \\\"lying flat\\\", let's clarify what it exactly means. \\\"Lying flat\\\", also known as \\\"Tang ping\\\" in Chinese, is a Mandarin term that describes a rejection of societal pressures to overwork. The term first appeared in 2020, but it gained traction in 2021 as more and more youngsters began to resonate with it. The concept is akin to the term \\\"Hippie\\\" that was popular in America during the 60s. People who adhere to this philosophy do not want to work hard as they believe that no matter how hard they work, their lives won't improve significantly. So, instead of laboring endlessly to earn a marginally higher salary, they opt for an easy job that merely suffices to cover their daily expenses.\\n\\n# Why \\\"lie flat\\\"?\\n\\nThere are several reasons why people choose to \\\"lie flat\\\" rather than working hard. One reason is that they feel disillusioned with the traditional path of working long hours and sacrificing personal life for the sake of their career. They may see others who have followed this path and yet struggle to make ends meet, and feel that it's not worth it. Moreover, some people may feel overwhelmed by the societal pressures to succeed and be productive, and just want to take a break from it all. Finally, some may simply lack the resources or opportunities to pursue a traditional career path, and \\\"lying flat\\\" offers a way for them to cope with their circumstances.\\n\\nThe older generation, however, might still believe that these individuals are just not hardworking enough. This belief is largely due to the fact that in their time, owning a house was possible through sheer hard work, given the predictability and affordability of housing prices. To some extent, they are right. However, they operate under one major false assumption - the current work ethic doesn't necessarily lead to home ownership.\\n\\nAs Brian mentioned in his podcast, even though he is one of the most successful, if not the top, stand-up comedians in Taiwan, he still can't imagine affording any of the mansions. Perhaps he could buy a private house, but certainly not two.\\n\\nSo here's the question - is he not working hard enough? Despite being the most famous stand-up comedian in Taiwan, does he still not deserve the fortune needed to buy a decent mansion? Comparing his situation to that of actors and comedians in the USA, who can afford not just one, but several houses and mansions, it's understandable why many would feel hopeless. This pervading sense of hopelessness in the lives of many young people often leads them to choose to \\\"lie flat\\\" and enjoy their lives with the least amount of effort.\\n\\n# Is it the end?\\n\\nIn my opinion, I won't \\\"lie flat\\\", at least not for now. Even though\\n\\nI've experienced the same sense of hopelessness throughout my life (though it’s only been 24 years), I have several reasons that sustain my motivation.\\n\\nLearning is my motivation to move on. To me, lying flat means that you're conceding to all the challenges you've faced and deciding to give up on finding answers. While it's easy to feel this way, I'm still curious about the things that I don’t understand. As long as I possess this curiosity, I will strive to get the answers. On this journey, I will gain knowledge and grow. Perhaps I won't find success immediately, but I will derive satisfaction and enjoyment from the process.\\n\\nDefine short-term progress and goals. I know it's difficult to set goals when you're feeling low. I'm not talking about big goals like getting rich or famous or something, but small ones. Like waking up earlier, getting enough sleep, having a pleasant chat with a friend, etc. It's important to feel grateful for the small things in daily life. Once you're content with what you have, you'll feel confident enough to strive for what you want.\\n\\nEngage with (positive) friends. The principle behind this is similar to my previous point. You need to stay positive in your life to avoid feeling miserable. When you converse with your friends, even if you express negative feelings, you'll have an outlet to share your thoughts. By voicing your thoughts, you start to feel connected with other people. Consequently, you'll be motivated to move on with your life.\\n\\n# Summary\\n\\nEveryone goes through downtimes, sometimes more than once. But it's okay to be sad, it's okay to feel lost, and it's okay to feel hopeless sometimes. But remember, it's not forever. There will be a rainbow after the rain.\"\n}",
+  "resource": "/blog",
+  "path": "/blog",
+  "httpMethod": "POST",
+  "isBase64Encoded": false,
+  "queryStringParameters": {},
+  "multiValueQueryStringParameters": {},
+  "pathParameters": {
+    "proxy": "/blog"
+  },
+  "stageVariables": {},
+  "headers": {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    "Accept-Encoding": "gzip, deflate, sdch",
+    "Accept-Language": "en-US,en;q=0.8",
+    "Cache-Control": "max-age=0",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-Country": "US",
+    "Host": "1234567890.execute-api.us-east-1.amazonaws.com",
+    "Upgrade-Insecure-Requests": "1",
+    "User-Agent": "Custom User Agent String",
+    "Via": "1.1 08f323deadbeefa7af34d5feb414ce27.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "cDehVQoZnx43VYQb9j2-nvCh-9z396Uhbp027Y2JvkCPNLmGJHqlaA==",
+    "X-Forwarded-For": "127.0.0.1, 127.0.0.2",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "multiValueHeaders": {
+    "Accept": [
+      "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+    ],
+    "Accept-Encoding": [
+      "gzip, deflate, sdch"
+    ],
+    "Accept-Language": [
+      "en-US,en;q=0.8"
+    ],
+    "Cache-Control": [
+      "max-age=0"
+    ],
+    "CloudFront-Forwarded-Proto": [
+      "https"
+    ],
+    "CloudFront-Is-Desktop-Viewer": [
+      "true"
+    ],
+    "CloudFront-Is-Mobile-Viewer": [
+      "false"
+    ],
+    "CloudFront-Is-SmartTV-Viewer": [
+      "false"
+    ],
+    "CloudFront-Is-Tablet-Viewer": [
+      "false"
+    ],
+    "CloudFront-Viewer-Country": [
+      "US"
+    ],
+    "Host": [
+      "0123456789.execute-api.us-east-1.amazonaws.com"
+    ],
+    "Upgrade-Insecure-Requests": [
+      "1"
+    ],
+    "User-Agent": [
+      "Custom User Agent String"
+    ],
+    "Via": [
+      "1.1 08f323deadbeefa7af34d5feb414ce27.cloudfront.net (CloudFront)"
+    ],
+    "X-Amz-Cf-Id": [
+      "cDehVQoZnx43VYQb9j2-nvCh-9z396Uhbp027Y2JvkCPNLmGJHqlaA=="
+    ],
+    "X-Forwarded-For": [
+      "127.0.0.1, 127.0.0.2"
+    ],
+    "X-Forwarded-Port": [
+      "443"
+    ],
+    "X-Forwarded-Proto": [
+      "https"
+    ]
+  },
+  "requestContext": {
+    "accountId": "123456789012",
+    "resourceId": "123456",
+    "stage": "prod",
+    "requestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
+    "requestTime": "09/Apr/2015:12:34:56 +0000",
+    "requestTimeEpoch": 1428582896000,
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "accessKey": null,
+      "sourceIp": "127.0.0.1",
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "Custom User Agent String",
+      "user": null
+    },
+    "path": "/prod/blog",
+    "resourcePath": "/{proxy+}",
+    "httpMethod": "POST",
+    "apiId": "1234567890",
+    "protocol": "HTTP/1.1"
+  }
+}
