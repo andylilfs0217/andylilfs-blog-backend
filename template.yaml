@@ -1,0 +1,213 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: |
+  andylilfs-blog-be
+  Sample SAM Template for andylilfs-blog-be
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+
+Parameters:
+  AWSENVNAME:
+    Type: String
+    Description: AWS Environment where code is being executed (AWS_SAM_LOCAL or AWS).
+    Default: AWS
+
+Resources:
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: hello_world/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Architectures:
+        - x86_64
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /hello
+            Method: get
+  AndylilfsBlogTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+  GetAllBlogsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: GetAllBlogsFunction
+      CodeUri: src/Function/blog
+      Handler: handler.get_blogs
+      Runtime: python3.12
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment:
+        Variables:
+          ANDYLILFSBLOGTABLE_TABLE_NAME: !Ref AndylilfsBlogTable
+          ANDYLILFSBLOGTABLE_TABLE_ARN: !GetAtt AndylilfsBlogTable.Arn
+          AWSENV: !Ref AWSENVNAME
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AndylilfsBlogTable
+      Events:
+        ServerlessRestApiGETblogs:
+          Type: Api
+          Properties:
+            Path: /blogs
+            Method: GET
+  GetAllBlogsFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${GetAllBlogsFunction}
+  GetBlogByIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: GetBlogByIdFunction
+      CodeUri: src/Function/blog
+      Handler: handler.get_blog_by_id
+      Runtime: python3.12
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment:
+        Variables:
+          ANDYLILFSBLOGTABLE_TABLE_NAME: !Ref AndylilfsBlogTable
+          ANDYLILFSBLOGTABLE_TABLE_ARN: !GetAtt AndylilfsBlogTable.Arn
+          AWSENV: !Ref AWSENVNAME
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AndylilfsBlogTable
+      Events:
+        ServerlessRestApiGETblogsid:
+          Type: Api
+          Properties:
+            Path: /blogs/{id}
+            Method: GET
+  GetBlogByIdFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${GetBlogByIdFunction}
+  CreateBlogFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: CreateBlogFunction
+      CodeUri: src/Function/blog
+      Handler: handler.create_blog
+      Runtime: python3.12
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment:
+        Variables:
+          ANDYLILFSBLOGTABLE_TABLE_NAME: !Ref AndylilfsBlogTable
+          ANDYLILFSBLOGTABLE_TABLE_ARN: !GetAtt AndylilfsBlogTable.Arn
+          AWSENV: !Ref AWSENVNAME
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AndylilfsBlogTable
+      Events:
+        ServerlessRestApiPOSTblogs:
+          Type: Api
+          Properties:
+            Path: /blogs
+            Method: POST
+  CreateBlogFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${CreateBlogFunction}
+  UpdateBlogByIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: UpdateBlogByIdFunction
+      CodeUri: src/Function/blog
+      Handler: handler.update_blog_by_id
+      Runtime: python3.12
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment:
+        Variables:
+          ANDYLILFSBLOGTABLE_TABLE_NAME: !Ref AndylilfsBlogTable
+          ANDYLILFSBLOGTABLE_TABLE_ARN: !GetAtt AndylilfsBlogTable.Arn
+          AWSENV: !Ref AWSENVNAME
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AndylilfsBlogTable
+      Events:
+        ServerlessRestApiPUTblogsid:
+          Type: Api
+          Properties:
+            Path: /blogs/{id}
+            Method: PUT
+  UpdateBlogByIdFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${UpdateBlogByIdFunction}
+  DeleteBlogByIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: DeleteBlogByIdFunction
+      CodeUri: src/Function/blog
+      Handler: handler.delete_blog_by_id
+      Runtime: python3.12
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Environment:
+        Variables:
+          ANDYLILFSBLOGTABLE_TABLE_NAME: !Ref AndylilfsBlogTable
+          ANDYLILFSBLOGTABLE_TABLE_ARN: !GetAtt AndylilfsBlogTable.Arn
+          AWSENV: !Ref AWSENVNAME
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AndylilfsBlogTable
+      Events:
+        ServerlessRestApiDELETEblogsid:
+          Type: Api
+          Properties:
+            Path: /blogs/{id}
+            Method: DELETE
+  DeleteBlogByIdFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${DeleteBlogByIdFunction}
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  HelloWorldApi:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
+  HelloWorldFunction:
+    Description: Hello World Lambda Function ARN
+    Value: !GetAtt HelloWorldFunction.Arn
+  HelloWorldFunctionIamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value: !GetAtt HelloWorldFunctionRole.Arn

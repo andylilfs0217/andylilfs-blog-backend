@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS SAM CLI Nested Stack for Auto Dependency Layer Creation
+Metadata:
+  SamCliInfo: 1.123.0
+  key: AWS SAM CLI sync command
+Outputs:
+  CreateBlogFunction6c52dad8DepLayer:
+    Value:
+      Ref: CreateBlogFunction6c52dad8DepLayer
+  DeleteBlogByIdFunctionc78960d6DepLayer:
+    Value:
+      Ref: DeleteBlogByIdFunctionc78960d6DepLayer
+  GetAllBlogsFunctionba375be7DepLayer:
+    Value:
+      Ref: GetAllBlogsFunctionba375be7DepLayer
+  GetBlogByIdFunctionf57704eeDepLayer:
+    Value:
+      Ref: GetBlogByIdFunctionf57704eeDepLayer
+  HelloWorldFunction19d43fc4DepLayer:
+    Value:
+      Ref: HelloWorldFunction19d43fc4DepLayer
+  UpdateBlogByIdFunctione93bee3cDepLayer:
+    Value:
+      Ref: UpdateBlogByIdFunctione93bee3cDepLayer
+Resources:
+  CreateBlogFunction6c52dad8DepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - python3.12
+      ContentUri: /Users/andyli/Programs/andylilfs-blog-be/.aws-sam/auto-dependency-layer/CreateBlogFunction6c52dad8DepLayer
+      Description: Auto created layer for dependencies of function CreateBlogFunction
+      LayerName: andylilfs-blog-bdd6c3273-CreateBlogFunction6c52dad8-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  DeleteBlogByIdFunctionc78960d6DepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - python3.12
+      ContentUri: /Users/andyli/Programs/andylilfs-blog-be/.aws-sam/auto-dependency-layer/DeleteBlogByIdFunctionc78960d6DepLayer
+      Description: Auto created layer for dependencies of function DeleteBlogByIdFunction
+      LayerName: andylilfs-blog-bdd6c3273-DeleteBlogByIdFunctionc78960d6-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  GetAllBlogsFunctionba375be7DepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - python3.12
+      ContentUri: /Users/andyli/Programs/andylilfs-blog-be/.aws-sam/auto-dependency-layer/GetAllBlogsFunctionba375be7DepLayer
+      Description: Auto created layer for dependencies of function GetAllBlogsFunction
+      LayerName: andylilfs-blog-bdd6c3273-GetAllBlogsFunctionba375be7-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  GetBlogByIdFunctionf57704eeDepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - python3.12
+      ContentUri: /Users/andyli/Programs/andylilfs-blog-be/.aws-sam/auto-dependency-layer/GetBlogByIdFunctionf57704eeDepLayer
+      Description: Auto created layer for dependencies of function GetBlogByIdFunction
+      LayerName: andylilfs-blog-bdd6c3273-GetBlogByIdFunctionf57704ee-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  HelloWorldFunction19d43fc4DepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - python3.12
+      ContentUri: /Users/andyli/Programs/andylilfs-blog-be/.aws-sam/auto-dependency-layer/HelloWorldFunction19d43fc4DepLayer
+      Description: Auto created layer for dependencies of function HelloWorldFunction
+      LayerName: andylilfs-blog-bdd6c3273-HelloWorldFunction19d43fc4-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  UpdateBlogByIdFunctione93bee3cDepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - python3.12
+      ContentUri: /Users/andyli/Programs/andylilfs-blog-be/.aws-sam/auto-dependency-layer/UpdateBlogByIdFunctione93bee3cDepLayer
+      Description: Auto created layer for dependencies of function UpdateBlogByIdFunction
+      LayerName: andylilfs-blog-bdd6c3273-UpdateBlogByIdFunctione93bee3c-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+Transform: AWS::Serverless-2016-10-31
