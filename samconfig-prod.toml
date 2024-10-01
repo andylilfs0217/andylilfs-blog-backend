@@ -5,7 +5,10 @@ version = 0.1
 [prod]
 [prod.global.parameters]
 stack_name = "andylilfs-blog-backend-prod"
-tags = { Environment = "prod", Project = "andylilfs-blog-backend" }
+
+[prod.global.tags]
+Environment = "prod"
+Project = "andylilfs-blog-backend"
 
 [prod.build.parameters]
 cached = true

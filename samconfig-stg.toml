@@ -5,7 +5,10 @@ version = 0.1
 [stg]
 [stg.global.parameters]
 stack_name = "andylilfs-blog-backend-stg"
-tags = { Environment = "stg", Project = "andylilfs-blog-backend" }
+
+[stg.global.tags]
+Environment = "stg"
+Project = "andylilfs-blog-backend"
 
 [stg.build.parameters]
 cached = true
