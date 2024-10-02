@@ -3,6 +3,7 @@ import json
 import os
 import boto3
 from uuid import uuid4
+from operator import itemgetter
 
 ###SECTION - GLOBAL VARIABLES
 
@@ -25,7 +26,7 @@ table = dynamodb.Table(os.environ["ANDYLILFSBLOGTABLE_TABLE_NAME"])
 ###SECTION - VALIDATION FUNCTIONS
 def validate_string(value, field_name, max_length=None):
     """
-    Validates that the given value is a string and optionally checks its length.
+    Validates that the given value is a string or None and optionally checks its length.
 
     Args:
         value (any): The value to validate.
@@ -33,74 +34,80 @@ def validate_string(value, field_name, max_length=None):
         max_length (int, optional): The maximum allowed length of the string. Defaults to None.
 
     Raises:
-        ValueError: If the value is not a string or if it exceeds the maximum length.
+        ValueError: If the value is not a string or None, or if it exceeds the maximum length.
     """
-    if not isinstance(value, str):
-        raise ValueError(f"{field_name} must be a string")
-    if max_length and len(value) > max_length:
+    if value is not None and not isinstance(value, str):
+        raise ValueError(f"{field_name} must be a string or None")
+    if value is not None and max_length and len(value) > max_length:
         raise ValueError(f"{field_name} must be no longer than {max_length} characters")
 
 
 def validate_date(value, field_name):
     """
-    Validates that the given value is a valid ISO format date.
+    Validates that the given value is a valid ISO format date or None.
 
     Args:
         value (str): The date string to validate.
         field_name (str): The name of the field being validated, used in the error message.
 
     Raises:
-        ValueError: If the value is not a valid ISO format date.
+        ValueError: If the value is not a valid ISO format date or None.
     """
-    try:
-        datetime.fromisoformat(value)
-    except ValueError:
-        raise ValueError(f"{field_name} must be a valid ISO format date")
+    if value is not None:
+        try:
+            datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%fZ")
+        except ValueError:
+            raise ValueError(f"{field_name} must be a valid ISO format date or None")
 
 
 def validate_list_of_strings(value, field_name):
     """
-    Validates that the given value is a list of strings.
+    Validates that the given value is a list of strings, an empty list, or None.
 
     Args:
         value (any): The value to be validated.
         field_name (str): The name of the field being validated, used in the error message.
 
     Raises:
-        ValueError: If the value is not a list or if any element in the list is not a string.
+        ValueError: If the value is not a list of strings, an empty list, or None.
     """
-    if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
-        raise ValueError(f"{field_name} must be a list of strings")
+    if value is not None:
+        if not isinstance(value, list):
+            raise ValueError(
+                f"{field_name} must be a list of strings, an empty list, or None"
+            )
+        if value and not all(isinstance(item, str) for item in value):
+            raise ValueError(f"{field_name} must contain only strings")
 
 
 def validate_boolean(value, field_name):
     """
-    Validates that the given value is a boolean.
+    Validates that the given value is a boolean or None.
 
     Args:
         value: The value to be checked.
         field_name: The name of the field being validated, used in the error message.
 
     Raises:
-        ValueError: If the value is not a boolean.
+        ValueError: If the value is not a boolean or None.
     """
-    if not isinstance(value, bool):
-        raise ValueError(f"{field_name} must be a boolean")
+    if value is not None and not isinstance(value, bool):
+        raise ValueError(f"{field_name} must be a boolean or None")
 
 
 def validate_json(value, field_name):
     """
-    Validates that the given value is a JSON object (dictionary).
+    Validates that the given value is a JSON object (dictionary) or None.
 
     Args:
         value (any): The value to be validated.
         field_name (str): The name of the field being validated, used in the error message.
 
     Raises:
-        ValueError: If the value is not a dictionary.
+        ValueError: If the value is not a dictionary or None.
     """
-    if not isinstance(value, dict):
-        raise ValueError(f"{field_name} must be a valid JSON object")
+    if value is not None and not isinstance(value, dict):
+        raise ValueError(f"{field_name} must be a valid JSON object or None")
 
 
 ###!SECTION
@@ -109,11 +116,12 @@ def validate_json(value, field_name):
 ###SECTION - HANDLER FUNCTIONS
 def get_blogs(event, context):
     """
-    Retrieve all blog entries from the database.
+    Retrieve all blog entries from the database, sorted by date in descending order.
 
-    This function scans the database table for all blog entries and returns them
-    in the response. If an error occurs during the scan, it catches the exception
-    and returns a 500 status code with an error message.
+    This function scans the database table for all blog entries, sorts them by date
+    in descending order, and returns them in the response. If an error occurs during
+    the scan or sorting process, it catches the exception and returns a 500 status code
+    with an error message.
 
     Args:
         event (dict): The event dictionary containing request parameters.
@@ -121,22 +129,25 @@ def get_blogs(event, context):
 
     Returns:
         dict: A dictionary containing the status code and the response body.
-            - If successful, the status code is 200 and the body contains the list of blogs.
+            - If successful, the status code is 200 and the body contains the sorted list of blogs.
             - If an error occurs, the status code is 500 and the body contains an error message.
     """
     try:
         response = table.scan()
         items = response.get("Items", [])
 
+        # Sort items by date in descending order
+        sorted_items = sorted(items, key=itemgetter("date"), reverse=True)
+
         return {
             "statusCode": 200,
-            "body": json.dumps({"count": len(items), "blogs": items}),
+            "body": json.dumps({"count": len(sorted_items), "blogs": sorted_items}),
         }
     except Exception as e:
         print(f"Error: {str(e)}")
         return {
             "statusCode": 500,
-            "body": json.dumps({"message": "Error retrieving blogs"}),
+            "body": json.dumps({"message": "Error retrieving and sorting blogs"}),
         }
 
 
@@ -176,45 +187,40 @@ def get_blog_by_id(event, context):
 
 
 def create_blog(event, context):
-    """
-    Creates a new blog post and inserts it into a DynamoDB table.
-
-    Args:
-        event (dict): The event dictionary containing the HTTP request data.
-                      Expected to have a "body" key with a JSON string.
-        context (object): The context in which the function is called (not used).
-
-    Returns:
-        dict: A dictionary containing the HTTP response with a status code and a message.
-              - On success: {"statusCode": 201, "body": json.dumps({"message": "Blog post created successfully", "postId": post_id})}
-              - On failure: {"statusCode": 500, "body": json.dumps({"message": "Error creating blog post"})}
-
-    Raises:
-        Exception: If there is an error during the creation of the blog post.
-    """
     try:
-        # Parse the incoming JSON body from the event
         body = json.loads(event["body"])
-
-        # Generate a unique ID for the blog post
         post_id = str(uuid4())
+        print(f"post_id: {post_id}")
 
-        # Prepare the item to be inserted into DynamoDB
         item = {
             "id": post_id,
-            "title": body.get("title"),  # String
-            "date": body.get("date"),  # Date
-            "tags": body.get("tags"),  # List of strings
-            "lastmod": body.get("lastmod"),  # Date
-            "draft": body.get("draft"),  # Boolean
-            "summary": body.get("summary"),  # String
-            "images": body.get("images"),  # JSON
-            "authors": body.get("authors"),  # List of strings
-            "layout": body.get("layout"),  # String
-            "bibliography": body.get("bibliography"),  # String
-            "canonicalURL": body.get("canonicalURL"),  # String
-            "content": body.get("content"),  # String
+            "title": body.get("title"),
+            "date": body.get("date"),
+            "tags": body.get("tags"),
+            "lastmod": body.get("lastmod"),
+            "draft": body.get("draft"),
+            "summary": body.get("summary"),
+            "image": body.get("image"),
+            "authors": body.get("authors"),
+            "layout": body.get("layout"),
+            "bibliography": body.get("bibliography"),
+            "canonicalUrl": body.get("canonicalUrl"),
+            "content": body.get("content"),
         }
+
+        # Validate the item fields
+        validate_string(item["title"], "title", max_length=100)
+        validate_date(item["date"], "date")
+        validate_list_of_strings(item["tags"], "tags")
+        validate_date(item["lastmod"], "lastmod")
+        validate_boolean(item["draft"], "draft")
+        validate_string(item["summary"], "summary", max_length=500)
+        validate_list_of_strings(item["image"], "image")
+        validate_list_of_strings(item["authors"], "authors")
+        validate_string(item["layout"], "layout", max_length=50)
+        validate_string(item["bibliography"], "bibliography", max_length=500)
+        validate_string(item["canonicalUrl"], "canonicalUrl", max_length=100)
+        validate_string(item["content"], "content")
 
         # Insert the item into DynamoDB
         table.put_item(Item=item)
@@ -259,6 +265,32 @@ def update_blog_by_id(event, context):
         blog_id = event["pathParameters"]["id"]
         body = json.loads(event["body"])
 
+        # Validate the updated fields
+        if "title" in body:
+            validate_string(body["title"], "title", max_length=100)
+        if "date" in body:
+            validate_date(body["date"], "date")
+        if "tags" in body:
+            validate_list_of_strings(body["tags"], "tags")
+        if "lastmod" in body:
+            validate_date(body["lastmod"], "lastmod")
+        if "draft" in body:
+            validate_boolean(body["draft"], "draft")
+        if "summary" in body:
+            validate_string(body["summary"], "summary", max_length=500)
+        if "image" in body:
+            validate_list_of_strings(body["image"], "image")
+        if "authors" in body:
+            validate_list_of_strings(body["authors"], "authors")
+        if "layout" in body:
+            validate_string(body["layout"], "layout", max_length=50)
+        if "bibliography" in body:
+            validate_string(body["bibliography"], "bibliography", max_length=500)
+        if "canonicalUrl" in body:
+            validate_string(body["canonicalUrl"], "canonicalUrl", max_length=100)
+        if "content" in body:
+            validate_string(body["content"], "content")
+
         update_expression = "set "
         expression_attribute_values = {}
         expression_attribute_names = {}
@@ -286,6 +318,12 @@ def update_blog_by_id(event, context):
                     "updatedBlog": response["Attributes"],
                 }
             ),
+        }
+    except ValueError as ve:
+        print(f"Validation Error: {str(ve)}")
+        return {
+            "statusCode": 400,
+            "body": json.dumps({"message": f"Validation Error: {str(ve)}"}),
         }
     except Exception as e:
         print(f"Error: {str(e)}")

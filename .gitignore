@@ -245,3 +245,6 @@ $RECYCLE.BIN/
 
 # Docker
 docker/*
+
+# SAM
+.aws-sam/*
