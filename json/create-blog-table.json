@@ -1,19 +1,19 @@
 {
-  "TableName": "ANDYLILFSBLOGTABLE",
+  "TableName": "AndylilfsBlogTable",
   "KeySchema": [
     {
-      "AttributeName": "Id",
+      "AttributeName": "id",
       "KeyType": "HASH"
     }
   ],
   "AttributeDefinitions": [
     {
-      "AttributeName": "Id",
+      "AttributeName": "id",
       "AttributeType": "S"
     }
   ],
   "ProvisionedThroughput": {
-    "ReadCapacityUnits": 1,
-    "WriteCapacityUnits": 1
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
   }
 }
